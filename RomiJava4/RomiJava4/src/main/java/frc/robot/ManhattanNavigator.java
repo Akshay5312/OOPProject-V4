@@ -27,23 +27,23 @@ public class ManhattanNavigator implements iPlanner {
      */
     public Path getPath(PlanarConfiguration Source, PlanarConfiguration Target){
 
+        
         PlanarConfiguration currInPath = new PlanarConfiguration(Source);
         Path newPath = new Path(Source);
+        if(!grid.inBounds(Target).get()){
+            return newPath;
+        }
         while(
             ((Target.getX() - currInPath.getX()) != 0)||
-            ((Target.getY() - currInPath.getY()) != 0)||
-            ((Target.getHeading() - currInPath.getHeading()) != 0)
+            ((Target.getY() - currInPath.getY()) != 0)
         ){
             int xDiff = Target.getX() - currInPath.getX();
             int yDiff = Target.getY() - currInPath.getY();
-            int hDiff = Target.getHeading() - currInPath.getHeading();
 
             if(xDiff != 0){
                 currInPath = new PlanarConfiguration(currInPath.getX() + Integer.signum(xDiff), currInPath.getY(), currInPath.getHeading());
             }else if(yDiff != 0){
                 currInPath = new PlanarConfiguration(currInPath.getX(), currInPath.getY() + Integer.signum(yDiff), currInPath.getHeading());
-            } else if(hDiff != 0){
-                currInPath = new PlanarConfiguration(currInPath.getX(), currInPath.getY(), currInPath.getHeading() + Integer.signum(hDiff));
             }
 
             newPath.addConfig(currInPath);
